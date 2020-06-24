@@ -4,33 +4,17 @@ import 'package:get/get.dart';
 
 enum CepFieldState { ZERADO, BUSCANDO, INCOMPLETO, INVALIDO, SUCESSO }
 
-class CepRX extends RxController {
-  var cepObj = Rx<ControllerCEP>();
+class ControllerStateCEP extends RxController {
 
-  CepRX () {
-    cepObj.value = new ControllerCEP();
-  }
-  // CepFieldState get teste => cepObj.value.cepFieldState;
-  // set teste(CepFieldState value) => cepObj.value.cepFieldState = value;
+  var cepFieldState = Rx<CepFieldState>();
+  var endereco = Rx<Endereco>();
+  var cep = "".obs;
 
-  String testeobj() {
-    cepObj.value = new ControllerCEP(cepFieldState: CepFieldState.ZERADO);
-    return cepObj.value.cepFieldState.toString();
-  }
+  ControllerStateCEP({CepFieldState cepState, String codigoPostal, Endereco endereco});
 
-  void ceP(String cep) {
-    cepObj.value.searchCep(cep);
-  }
-}
 
-class ControllerCEP {
-  ControllerCEP({this.cepFieldState, this.cep, this.address}) {
-    cepFieldState = CepFieldState.ZERADO;
-  }
-
-  CepFieldState cepFieldState;
-  String cep;
-  Endereco address;
+  CepFieldState get cepstate => cepFieldState.value;
+  set cepstate(CepFieldState value) => cepFieldState.value = value;
 
   void searchCep(String cep) async {
     final CepResponse cepResponse = await getAddressFromAPI(cep);
@@ -38,15 +22,15 @@ class ControllerCEP {
     if (cepResponse.success) {
       print("SUCESSO CEP");
       //cepFieldState.value = CepFieldState.SUCESSO;
-      ControllerCEP(
-        cepFieldState: CepFieldState.SUCESSO,
-        cep: cep,
-        address: cepResponse.result,
+      ControllerStateCEP(
+        cepState: CepFieldState.SUCESSO,
+        codigoPostal: cep,
+        endereco: cepResponse.result,
       );
     } else {
-      ControllerCEP(
+      ControllerStateCEP(
         //cepFieldState: cepFieldState,
-        cep: cep,
+        codigoPostal: cep,
       );
     }
   }

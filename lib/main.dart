@@ -9,7 +9,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -23,20 +23,22 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: GetX<CepRX>(
-          init: CepRX(),
-          builder: (_) {
-            return Column(
-                children: <Widget>[
-              FlatButton(
-                  child: Text(_.testeobj()),
-                  onPressed: null,
-                  ),
-              TextField(),
-            ]);
-          },
+    return Scaffold(
+      body: Container(
+        child: Center(
+          child: GetX<CepRX>(
+            init: CepRX(),
+            builder: (_) {
+              return Column(
+                  children: <Widget>[
+                FlatButton(
+                    child: Text(_.cepObj.value.cepFieldState.toString()),
+                    onPressed: null,
+                    ),
+                //TextField(),
+              ]);
+            },
+          ),
         ),
       ),
     );
